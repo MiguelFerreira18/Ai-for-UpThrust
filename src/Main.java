@@ -5,7 +5,7 @@ public class Main {
         UpthrustGame newGame = new UpthrustGame();
 
         newGame.suc();
-
+        System.out.println("olá");
         System.out.println(newGame);
     }
 }
