@@ -57,12 +57,12 @@ public class UpthrustGame {
             for (int k = 0; k < matrizDeJogo[i].length; k++) {
                 if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("2"))
                         || (isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("3"))) {
-                    if (i - n >= 0 && matrizDeJogo[i - n][k].equalsIgnoreCase("0")) {
+                    if (i - n >= 0 && matrizDeJogo[i - n][k].equalsIgnoreCase("0") ) {/*&& maiorPosicao(matrizDeJogo[i][k])*/
                         String[][] tempArray = copy(matrizDeJogo);
                         String temp = tempArray[i - n][k];
                         tempArray[i - n][k] = tempArray[i][k];
                         tempArray[i][k] = temp;
-                        if (!color(i, tempArray[i][k])) {
+                        if (!color(i, tempArray[i][k])) {//Este metodo não funciona verificar mais tarde ou com o professor
                             possibilidades.add(tempArray);
                         }
                     } else if ((!isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("1"))
@@ -81,7 +81,21 @@ public class UpthrustGame {
 
         }
     }
-
+/*
+* Possiblilidade Não contada:
+[0, 0, 0, 0]
+[0, 0, 0, 0]
+[0, 0, 0, 0]
+[0, 0, 0, 0]
+[0, 0, 4, 0]
+[3, 0, 0, 0]
+[0, 0, 0, 2]
+[1, 2, 3, 4]
+[2, 3, 0, 1]
+[0, 4, 1, 0]
+[4, 1, 2, 3]
+*
+* */
     /*
      * Regras de jogo a fazer:
      * --Checar se é a unica cor igual na mesma linha
@@ -121,35 +135,40 @@ public class UpthrustGame {
     }
 
     /**
-     * retorna se é ou não a mior posição dessa cor dada
-     * ##############Nãofunciona#####################
-     * 
-     * @param m   arra(linha) em que se encontra
+     * retorna verdadeiro se o elemento é o maior da sua posição
+     *
+     *
      * @param cor cor que queremos checar se é ou não a maior posição
      * @return retorna verdadeiro se for a unica retorna false se não for a unica
      */
-    public boolean maiorPosicao(int m, String cor) {
-        for (int i = m - 1; i > 0; i--) {
+    public boolean maiorPosicao( String cor) {
+        for (int i = matrizDeJogo.length-1; i > 0; i--) {
             for (int k = 0; k < 4; k++) {
                 if (matrizDeJogo[i][k].equalsIgnoreCase(cor)) {
                     System.out.println("é o maior da posição desse numero " + matrizDeJogo[i][k] + "  " + cor);
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     /**
      * retorna verdadeiro se for a unica da sua cor na linha da matrizDeJogo
+     * ##############Não funciona direito##################
      * 
      * @param m   linha(array) da matrizDeJogo
      * @param cor cor que queremos checar se existe outra igual na mesma linha
      * @return
      */
     public boolean color(int m, String cor) {
+
         for (int i = 0; i < 4; i++) {
-            if (matrizDeJogo[m][i].equalsIgnoreCase(cor)) {
+            System.out.println(matrizDeJogo[m][i]);
+            if(matrizDeJogo[m][i].equalsIgnoreCase("0"))
+            {
+                continue;
+            } else if (matrizDeJogo[m][i].equalsIgnoreCase(cor)) {
                 System.out.println("tem cor no mesmo sitio");
                 return true;
             }
