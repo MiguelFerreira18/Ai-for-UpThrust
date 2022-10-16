@@ -4,25 +4,16 @@ import java.util.Arrays;
 
 public class UpthrustGame {
     String[][] matrizDeJogo;
-    ArrayList<String[][]> possibilidades;
+
 
     private Boolean isPLayer1;
 
-    public UpthrustGame() {
-        this.matrizDeJogo = new String[][] { { "0", "0", "0", "0" },
-                { "0", "0", "0", "0", },
-                { "0", "0", "0", "0" },
-                { "0", "0", "0", "0" },
-                { "0", "0", "4", "0" },
-                { "3", "0", "0", "0" },
-                { "0", "0", "0", "0" },
-                { "1", "2", "3", "4" },
-                { "2", "3", "0", "1" },
-                { "0", "4", "1", "2" },
-                { "4", "1", "2", "3" } };
-        this.isPLayer1 = true;
-        this.possibilidades = new ArrayList<>();
+    public UpthrustGame(String[][] matrizDeJogo) {
+        this.matrizDeJogo = matrizDeJogo;
+        isPLayer1 = true;
+
     }
+
 
     /*
      * this.matrizDeJogo = new String[][]
@@ -49,9 +40,10 @@ public class UpthrustGame {
     /**
      * player 1 : 2 and 3
      * player 2 : 1 and 4
-     *
      */
-    public void suc() {
+
+    public ArrayList<UpthrustGame> suc() {
+        ArrayList<UpthrustGame> possibilidades = new ArrayList<>();
         for (int i = 0; i < matrizDeJogo.length; i++) {
             int n = numberOfJumps(matrizDeJogo[i]);
             for (int k = 0; k < matrizDeJogo[i].length; k++) {
@@ -59,34 +51,44 @@ public class UpthrustGame {
                         || (isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("3"))) {
                     if (i - n >= 0 && matrizDeJogo[i - n][k].equalsIgnoreCase("0")
                             && maiorPosicao(i, k, matrizDeJogo[i][k])) {// esqueci me de contar quantos estavam na
-                                                                        // linha: Funciona
+                        // linha: Funciona
 
                         String[][] tempArray = copy(matrizDeJogo);
                         String temp = tempArray[i - n][k];
                         tempArray[i - n][k] = tempArray[i][k];
                         tempArray[i][k] = temp;
-                        printMatrizInv(tempArray);
+                        //printMatrizInv(tempArray);
                         if (color(i - n, k, tempArray[i - n][k])) {// simples erro de logica: corrigido
-
-                            possibilidades.add(tempArray);
+                            printMatrizInv(tempArray);
+                            possibilidades.add(new UpthrustGame(tempArray));
                         }
-                    } else if ((!isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("1"))
-                            || (!isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("4"))) {
-                        if (matrizDeJogo[1 - n][k].equalsIgnoreCase("0")) {
-                            String[][] tempArray = copy(matrizDeJogo);
+                        //para fazer todos verificar antes se está ou não ativo;
+                    }
+                }if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("1"))
+                        || (isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("4"))) {
+                    if (i - n >= 0 && matrizDeJogo[i - n][k].equalsIgnoreCase("0")
+                            && maiorPosicao(i, k, matrizDeJogo[i][k])) {
 
-                            String temp = tempArray[i - n][k];
-                            tempArray[i - n][k] = tempArray[i][k];
-                            tempArray[i][k] = temp;
-                            possibilidades.add(tempArray);
+                        String[][] tempArray = copy(matrizDeJogo);
+
+                        String temp = tempArray[i - n][k];
+                        tempArray[i - n][k] = tempArray[i][k];
+                        tempArray[i][k] = temp;
+
+                        if (color(i - n, k, tempArray[i - n][k])) {
+                            possibilidades.add(new UpthrustGame(tempArray));
+                            printMatrizInv(tempArray);
                         }
                     }
                 }
             }
-
         }
+        return possibilidades;
     }
+    public void adicionaNovoEstado(UpthrustGame newEstado){
+        printMatrizInv(newEstado.getMatrizDeJogo());
 
+    }
     /*
      * Regras de jogo a fazer:
      * --Checar se é a unica cor igual na mesma linha
@@ -95,7 +97,7 @@ public class UpthrustGame {
 
     /**
      * calcula o numero de saltos que uma peça pode dar
-     * 
+     *
      * @param p Linha da matrizDeJogo
      * @return retorna o numero de peças que existem nessa linha
      */
@@ -111,7 +113,7 @@ public class UpthrustGame {
     /**
      * retorna uma matriz identica à que é enviada(evita que seja usada a mesma
      * referencia de forma a evitar erros)
-     * 
+     *
      * @param p
      * @return
      */
@@ -130,7 +132,7 @@ public class UpthrustGame {
      * na mesma linha, coluna e tem 0 elementos na mesma linha.
      * Retorna verdadeiro se a cor não estiver na
      * mesma linha,coluna e tem de ter mais do que um elemento na mesma linha
-     * 
+     *
      * @param linhaCorPos  linha em que se encontra a cor que queremos ver se é a
      *                     maior
      * @param colunaCorPos coluna em que se encontra a cor que queremos ver se é a
@@ -153,11 +155,10 @@ public class UpthrustGame {
     }
 
     /**
-     * 
      * Este metodo retorna falso se existir dois elementos com a mesma cor nessa
      * mesma linha e retorna verdaderio se apenas existir um elemento com essa cor
      * nessa linha
-     * 
+     *
      * @param linhaCorPos linha que queremos percorrer para ver se existe ou não
      *                    mais do que uma cor igual
      * @param corPos      coluna onde se encontra o elemento que sabemos que existe,
@@ -166,12 +167,13 @@ public class UpthrustGame {
      * @return
      */
     public boolean color(int linhaCorPos, int corPos, String cor) {
-
-        for (int i = 0; i < matrizDeJogo[linhaCorPos].length; i++) {
-            if (i == corPos) {
-                continue;
-            } else if (matrizDeJogo[linhaCorPos][i].equalsIgnoreCase(cor)) {
-                return false;
+        if (linhaCorPos >= 5) {
+            for (int i = 0; i < matrizDeJogo[linhaCorPos].length; i++) {
+                if (i == corPos) {
+                    continue;
+                } else if (matrizDeJogo[linhaCorPos][i].equalsIgnoreCase(cor)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -179,7 +181,7 @@ public class UpthrustGame {
 
     /**
      * metodo simples para imprimir uma matriz
-     * 
+     *
      * @param matriz matriz que queremos imprimir
      */
     public void printMatrizInv(String[][] matriz) {
@@ -192,13 +194,9 @@ public class UpthrustGame {
     @Override
     public String toString() {
 
-        for (int i = 0; i < possibilidades.size(); i++) {
-            System.out.println("Possiblilidade " + (i + 1) + " :");
-            for (int k = 0; k < possibilidades.get(i).length; k++) {
-                System.out.println("" + Arrays.toString(possibilidades.get(i)[k]));
-            }
-            System.out.println("\n");
+        for (int i = 0; i < this.matrizDeJogo.length; i++) {
+            System.out.println(Arrays.toString(matrizDeJogo[i]));
         }
-        return "\n";
+        return "---------------------------------\n";
     }
 }
