@@ -201,7 +201,7 @@ public class UpthrustGame extends NoJogoAB {
         }
         return "---------------------------------\n";
     }
-
+//new comment
     @Override
     public ArrayList<Jogada> expandeAB() {
         ArrayList<Jogada> possibilidades = new ArrayList<>();
