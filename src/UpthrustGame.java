@@ -47,7 +47,7 @@ public class UpthrustGame extends NoJogoAB {
         for (int i = 0; i < matrizDeJogo.length; i++) {
             int n = numberOfJumps(matrizDeJogo[i]);
             for (int k = 0; k < matrizDeJogo[i].length; k++) {
-                if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("2"))
+                if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("1"))
                         || (isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("3"))) {
                     if (i - n >= 0 && matrizDeJogo[i - n][k].equalsIgnoreCase("0")
                             && maiorPosicao(i, k, matrizDeJogo[i][k])) {// esqueci me de contar quantos estavam na
@@ -65,7 +65,7 @@ public class UpthrustGame extends NoJogoAB {
                         //para fazer todos verificar antes se está ou não ativo;
                     }
                 }
-                if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("1"))
+                if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("2"))
                         || (isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("4"))) {
                     if (i - n >= 0 && matrizDeJogo[i - n][k].equalsIgnoreCase("0")
                             && maiorPosicao(i, k, matrizDeJogo[i][k])) {
@@ -287,26 +287,26 @@ public class UpthrustGame extends NoJogoAB {
         return h;
     }
 
-    public static void main(String[] args) {
-        final String[][] startGame = {{"0", "0", "0", "0"},
-                {"0", "0", "0", "0",},
-                {"0", "0", "0", "0"},
-                {"0", "0", "0", "0"},
-                {"0", "0", "0", "0"},
-                {"0", "0", "0", "0"},
-                {"0", "0", "0", "0"},
-                {"1", "2", "3", "4"},
-                {"2", "3", "4", "1"},
-                {"3", "4", "1", "2"},
-                {"4", "1", "2", "1"}};
-        UpthrustGame game = new UpthrustGame(startGame);
-        ArrayList<Jogada> suc = game.expandeAB();
-        for (Jogada j :
-                suc) {
-            System.out.println(j);
-        }
-
-    }
+//    public static void main(String[] args) {
+//        final String[][] startGame = {{"0", "0", "0", "0"},
+//                {"0", "0", "0", "0",},
+//                {"0", "0", "0", "0"},
+//                {"0", "0", "0", "0"},
+//                {"0", "0", "0", "0"},
+//                {"0", "0", "0", "0"},
+//                {"0", "0", "0", "0"},
+//                {"1", "2", "3", "4"},
+//                {"2", "3", "4", "1"},
+//                {"3", "4", "1", "2"},
+//                {"4", "1", "2", "1"}};
+//        UpthrustGame game = new UpthrustGame(startGame);
+//        ArrayList<Jogada> suc = game.expandeAB();
+//        for (Jogada j :
+//                suc) {
+//            System.out.println(j);
+//        }
+//
+//    }
 
 
 }

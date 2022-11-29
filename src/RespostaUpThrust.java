@@ -62,22 +62,22 @@ public class RespostaUpThrust implements Runnable {
         JPanel js = new JPanel();
         jp.add(js, BorderLayout.SOUTH);
         JButton jok = new JButton("  OK  ");
-//         jok.addActionListener( new ActionListener( ) {
-//             public void actionPerformed(ActionEvent e) {
-//                 String st = jt.getText();
-//                 try {
-//                     out.write( st+"\n");    // envia conte�do do textfield
-//                     out.flush();
-//                 } catch (Exception ex) {
-//                     ex.printStackTrace();
-//                 }
-//                 System.out.println("Escreveu "+st);
-//                 jt.setBackground(Color.white);
-//                 jt.setText("");
-//                 jt.setEnabled(false);
-//                 jc.setText("");
-//             }
-//         });
+         jok.addActionListener( new ActionListener( ) {
+             public void actionPerformed(ActionEvent e) {
+                 String st = jt.getText();
+                 try {
+                     out.write( st+"\n");    // envia conte�do do textfield
+                     out.flush();
+                 } catch (Exception ex) {
+                     ex.printStackTrace();
+                 }
+                 System.out.println("Escreveu "+st);
+                 jt.setBackground(Color.white);
+                 jt.setText("");
+                 jt.setEnabled(false);
+                 jc.setText("");
+             }
+         });
         js.add(jok);
         JButton jfim = new JButton("  Sair  ");
         js.add(jfim, BorderLayout.SOUTH);
@@ -106,7 +106,7 @@ public class RespostaUpThrust implements Runnable {
     // thread que corre em paralelo com o resto do programa
     public void run() {
         try {
-            //s = new Socket("127.0.0.1", porta);
+            s = new Socket("127.0.0.1", porta);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("Impossível abrir socket");
@@ -170,10 +170,10 @@ public class RespostaUpThrust implements Runnable {
     public String[][] processaEstado(String st) {
         String[] v = st.trim().split(" ");
         String[][] s = new String[11][4];
-        for (int l = 0; l < 7; l++) {
-            for (int c = 0; c < 7; c++) {
+        for (int l = 0; l < 11; l++) {
+            for (int c = 0; c < 4; c++) {
                 try {
-                    s[l][c] = v[l * 7 + c];
+                    s[l][c] = v[l * 4 + c];
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     System.out.println("tab " + v + "  l " + l + "  c " + c);
