@@ -11,7 +11,11 @@ public class UpthrustGame extends NoJogoAB {
     public UpthrustGame(String[][] matrizDeJogo) {
         super(1);
         this.matrizDeJogo = matrizDeJogo;
-        isPLayer1 = true;
+        if(getVez() == 1){
+            isPLayer1 = true;
+        }else{
+            isPLayer1 = false;
+        }
     }
 
 
@@ -144,13 +148,21 @@ public class UpthrustGame extends NoJogoAB {
      */
     public boolean maiorPosicao(int linhaCorPos, int colunaCorPos, String cor) {
 
+        int linha =0;
+        int coluna =0;
         for (int i = 0; i < matrizDeJogo.length; i++) {
             for (int k = 0; k < 4; k++) {
-
-                if (matrizDeJogo[i][k].equals(cor) && i == linhaCorPos && colunaCorPos == k
-                        && numberOfJumps(matrizDeJogo[i]) == 1) {
-                    return false;
+                if(matrizDeJogo[i][k].equalsIgnoreCase(cor)){
+                    linha = i;
+                    coluna = k;
+                    if ( linha == linhaCorPos && colunaCorPos == coluna
+                            && numberOfJumps(matrizDeJogo[i]) == 1) {
+                        return false;
+                    }else {
+                        return true;
+                    }
                 }
+
             }
         }
         return true;
@@ -208,7 +220,7 @@ public class UpthrustGame extends NoJogoAB {
         for (int i = 0; i < matrizDeJogo.length; i++) {
             int n = numberOfJumps(matrizDeJogo[i]);
             for (int k = 0; k < matrizDeJogo[i].length; k++) {
-                if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("2"))
+                if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("1"))
                         || (isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("3"))) {
                     if (i - n >= 0 && matrizDeJogo[i - n][k].equalsIgnoreCase("0")
                             && maiorPosicao(i, k, matrizDeJogo[i][k])) {// esqueci me de contar quantos estavam na
@@ -218,27 +230,27 @@ public class UpthrustGame extends NoJogoAB {
                         String temp = tempArray[i - n][k];
                         tempArray[i - n][k] = tempArray[i][k];
                         tempArray[i][k] = temp;
+
                         //printMatrizInv(tempArray);
                         if (color(i - n, k, tempArray[i - n][k])) {// simples erro de logica: corrigido
                             printMatrizInv(tempArray);
-                            possibilidades.add(new Jogada("", new UpthrustGame(tempArray)));
+                            possibilidades.add(new Jogada("" + (k+1) + " " +matrizDeJogo[i][k], new UpthrustGame(tempArray)));
                         }
                         //para fazer todos verificar antes se está ou não ativo;
                     }
                 }
-                if ((isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("1"))
-                        || (isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("4"))) {
+                if ((!isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("2"))
+                        || (!isPLayer1 && matrizDeJogo[i][k].equalsIgnoreCase("4"))) {
                     if (i - n >= 0 && matrizDeJogo[i - n][k].equalsIgnoreCase("0")
                             && maiorPosicao(i, k, matrizDeJogo[i][k])) {
 
                         String[][] tempArray = copy(matrizDeJogo);
-
                         String temp = tempArray[i - n][k];
                         tempArray[i - n][k] = tempArray[i][k];
                         tempArray[i][k] = temp;
 
                         if (color(i - n, k, tempArray[i - n][k])) {
-                            possibilidades.add(new Jogada("", new UpthrustGame(tempArray)));
+                            possibilidades.add(new Jogada("" + (k+1) + " " +matrizDeJogo[i][k], new UpthrustGame(tempArray)));
                             printMatrizInv(tempArray);
                         }
                     }
@@ -247,6 +259,7 @@ public class UpthrustGame extends NoJogoAB {
         }
         return possibilidades;
     }
+
 
     @Override
     public double getH() {
