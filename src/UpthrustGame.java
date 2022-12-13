@@ -263,20 +263,30 @@ public class UpthrustGame extends NoJogoAB {
 
     @Override
     public double getH() {
+        //Se não existir matrizDeJogo
         if (matrizDeJogo == null)
             return 0;
         double h = 0;
+        //Percorrer matriz
         for (int l = 0; l < matrizDeJogo.length; l++) {
-            for (int c = 0; c < matrizDeJogo[l].length; c++) {
+            for (int c = 0; c < matrizDeJogo[l].length; c++)
+            {
+                //Casa vazia
                 if (matrizDeJogo[l][c].equals("0"))
                     continue;
-                int v = Math.max(Math.abs(l - 3), Math.abs(c - 3));
+
+                //v = valor da linha
+                int v = l;
+
+                //Se for a tua vez de jogar
                 if (matrizDeJogo[l][c].equals(Integer.toString(getVez())))
-                    h += 9 - v;
+                    h = h +  11 - v;
+                //Se for a vez do oponente
                 else
-                    h -= 9 - v;
+                    h = h - 11 - v;
             }
         }
+
         // testar final de jogo
         int n = 0;
         for (int l = 0; l < matrizDeJogo.length; l++) {
